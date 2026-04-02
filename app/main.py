@@ -32,24 +32,20 @@ def sha256_hash_str(to_hash: str) -> str:
 
 
 def brute_force_password(passwords: list, step: int, index: int) -> None:
-    result = []
     dif = 4000000
+
     for number in range(0 if index == 0 else step - dif, step):
         password = str(number).zfill(8)
         hashed_password = sha256_hash_str(password)
 
         if hashed_password in passwords:
             print(f"Founded password: {password}")
-            result.append(password)
-
-        if len(result) == len(passwords):
-            break
 
 
 def main_multiprocess_executor(passwords: list, steps: list) -> None:
     futures = []
 
-    with ProcessPoolExecutor(multiprocessing.cpu_count() - 4) as executor:
+    with ProcessPoolExecutor(multiprocessing.cpu_count()) as executor:
         for index, step in enumerate(steps):
             futures.append(
                 executor.submit(
